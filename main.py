@@ -11,7 +11,7 @@ def main():
     print(f"Using primary device: {device}")
 
     # --- Model and Tokenizer Loading ---
-    model_name = "Qwen/Qwen2.5-0.5B-Instruct"
+    model_name = "Qwen/Qwen2.5-7B-Instruct"
     print(f"Loading model: {model_name}...")
     # Load in default FP32 precision, as mixed precision will be handled by the training loop if enabled.
     # model = AutoModelForCausalLM.from_pretrained(model_name)
