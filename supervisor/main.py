@@ -28,7 +28,7 @@ def main():
     # --- Data Preparation ---
     all_data = prepare_pubmedqa_dataset()
     random.shuffle(all_data)
-    eval_data_size = 400
+    eval_data_size = 100
     eval_data = all_data[:eval_data_size]
     train_data = all_data[eval_data_size:]
     print(f"Data prepared. Training examples: {len(train_data)}, Evaluation examples: {len(eval_data)}")
@@ -49,7 +49,7 @@ def main():
         tokenizer=tokenizer,
         train_data=train_data,
         device=device,
-        batch_size=1,            # safer for GPU memory
+        batch_size=3,            # safer for GPU memory
         num_generations=2,       # safer for GPU memory
         max_completion_length=128,
         use_lora=True            # optional
