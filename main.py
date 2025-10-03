@@ -35,22 +35,9 @@ def main():
 
     # --- Pre-Training Evaluation ---
     print("\nEvaluating model before fine-tuning...")
-    evaluate_supervisor(model, tokenizer, eval_data, device)
+    acc_before =evaluate_supervisor(model, tokenizer, eval_data, device)
 
-    # --- Training Configuration ---
-    # This config is designed for a single GPU with ~16-24GB VRAM. Adjust if needed.
-    training_config = {
-        'num_iterations': 1,        # Number of times to update the reference model
-        'num_steps': 100,           # Batches per iteration. Increase for more training.
-        'batch_size': 2,            # Prompts per batch. Decrease if OOM.
-        'num_generations': 4,       # Completions per prompt. Decrease if OOM.
-        'max_completion_length': 300, # Decrease if OOM.
-        'beta': 0.01,               # KL penalty strength
-        'learning_rate': 5e-6,      # Optimizer learning rate
-        'mu': 2,                    # Number of optimization steps per batch
-        'epsilon': 0.2              # PPO clipping value
-    }
-    
+ 
     # Initialize wandb if API key is set
     # if os.environ.get("WANDB_API_KEY"):
     #     wandb.init(project=os.environ["WANDB_PROJECT"], config=training_config, reinit=True)
@@ -73,7 +60,7 @@ def main():
 
     # --- Post-Training Evaluation ---
     print("\nEvaluating model after GRPO fine-tuning...")
-    evaluate_supervisor(trained_model, tokenizer, eval_data, device)
+    acc_after = evaluate_supervisor(trained_model, tokenizer, eval_data, device)
 
     # --- Save Final Model ---
     output_dir = "grpo_pubmedqa_finetuned_model"
@@ -81,6 +68,8 @@ def main():
     trained_model.save_pretrained(output_dir)
     tokenizer.save_pretrained(output_dir)
     print("Model saved successfully.")
+    print(f"Accuracy before training: {acc_before:.2f}%")
+    print(f"Accuracy after training: {acc_after:.2f}%")
 
 if __name__ == "__main__":
     main()
