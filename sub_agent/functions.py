@@ -16,7 +16,7 @@ import csv
 # PyTorch and related libraries
 import torch
 import torch.nn as nn
-
+torch.cuda.empty_cache()
 # Hugging Face libraries
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset
@@ -53,33 +53,12 @@ def build_prompt(messages):
     """Builds a single prompt string from a list of messages."""
     return "\n".join([msg["content"].strip() for msg in messages])
 
-# def prepare_pubmedqa_dataset(json_file_path="golden_dataset_pubmedqa_qwen2.5_pro_test_500.json"):
-#     """Loads and prepares the PubMedQA dataset from your local JSON file."""
-#     formatted_data = []
-#     with open(json_file_path, 'r', encoding='utf-8') as f:
-#         data = json.load(f)
-
-#     for entry in data:
-#         if all(k in entry for k in ['question', 'context', 'ground_truth']):
-#             user_content = f"Context:\n{entry['context']}\n\nQuestion:\n{entry['question']}"
-            
-#             prompt_str = build_prompt([
-#                 {"role": "system", "content": SYSTEM_PROMPT},
-#                 {"role": "user", "content": user_content}
-#             ])
-            
-#             formatted_example = {
-#                 "prompt": prompt_str,
-#                 "answer": entry["ground_truth"].strip().lower()
-#             }
-#             formatted_data.append(formatted_example)
-#     return formatted_data
 
 def prepare_pubmedqa_dataset(csv_file_path="pubmedqa.csv"):
     """Loads and prepares the PubMedQA dataset from a CSV file."""
     formatted_data = []
     with open(csv_file_path, 'r', encoding='utf-8') as f:
-        reader = csv.reader(f)
+        reader = csv.DictReader(f)  # <-- Use DictReader so rows are dicts
         for row in reader:
             user_content = f"Context:\n{row['context']}\n\nQuestion:\n{row['question']}"
             prompt_str = build_prompt([
@@ -99,17 +78,17 @@ def prepare_pubmedqa_dataset(csv_file_path="pubmedqa.csv"):
 
 def extract_answer_from_model_output(text):
     """Extracts the value from the last <answer> tag in the text."""
-    parts = text.split("<answer>")
-    if len(parts) < 2:
-        return None
-    last_part = parts[-1]
-    if "</answer>" not in last_part:
-        return None
-    answer = last_part.split("</answer>")[0].strip().lower()
+    # parts = text.split("<answer>")
+    # if len(parts) < 2:
+    #     return None
+    # last_part = parts[-1]
+    # if "</answer>" not in last_part:
+    #     return None
+    # answer = last_part.split("</answer>")[0].strip().lower()
     
-    # Be strict: only return if it's clearly 'yes' or 'no'
-    if "yes" in answer: return "yes"
-    if "no" in answer: return "no"
+    # # Be strict: only return if it's clearly 'yes' or 'no'
+    if "yes" in text.lower(): return "yes"
+    elif "no" in text.lower(): return "no"
     return None
 
 def pubmedqa_correctness_reward(completions, answer, **kwargs):
@@ -307,35 +286,74 @@ def grpo_loss(model, ref_model, rollout_data, reward_function, beta=0.01, epsilo
 # ==============================================================================
 # SECTION 5: TRAINING LOOP (IMITATED AND ADAPTED FOR SINGLE/MULTI GPU)
 # ==============================================================================
+import torch
+from torch.cuda.amp import autocast, GradScaler
+import copy
+import random
 
-def train_with_grpo(model, tokenizer, train_data, num_iterations=1, num_steps=500, batch_size=4,
-                    num_generations=4, max_completion_length=128, beta=0.1,
-                    learning_rate=5e-6, mu=3, epsilon=0.2, reward_function=None):
-    """Main GRPO training loop."""
-    
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+def train_with_grpo(
+    model,
+    tokenizer,
+    train_data,
+    num_iterations=1,
+    num_steps=500,
+    batch_size=2,                 # reduce batch_size for GPU memory
+    num_generations=2,            # reduce generations
+    max_completion_length=128,    # reduce completion length
+    beta=0.1,
+    learning_rate=5e-6,
+    mu=3,
+    epsilon=0.2,
+    reward_function=combined_reward,
+    device=None,
+    use_lora=True                # optional flag to enable LoRA
+):
+    """Memory-safe GRPO training loop with mixed precision and optional LoRA."""
+
+    # 1️⃣ Device setup
+    if device is None:
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device}")
+
+    # 2️⃣ Optional LoRA
+    if use_lora:
+        from peft import LoraConfig, get_peft_model
+        lora_config = LoraConfig(
+            r=8,
+            lora_alpha=16,
+            target_modules=["q_proj","k_proj","v_proj"],
+            lora_dropout=0.05,
+            bias="none",
+            task_type="CAUSAL_LM"
+        )
+        model = get_peft_model(model, lora_config)
+        print("LoRA applied to q/k/v projections.")
+
     model.to(device)
+
+    # 3️⃣ Mixed precision scaler
+    scaler = GradScaler()
 
     # Outer loop for updating the reference model
     for iteration in range(num_iterations):
         print(f"\n--- Starting GRPO Iteration {iteration + 1}/{num_iterations} ---")
 
-        # Create a deep copy of the current model to act as the reference model
+        # Reference model
         ref_model = copy.deepcopy(model)
         ref_model.eval()
         for param in ref_model.parameters():
             param.requires_grad = False
-        print("Reference model created for this iteration.")
+        ref_model.to(device)
+        print("Reference model created.")
 
         optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate)
         model.train()
 
         # Inner loop for batch updates
         for step in range(num_steps):
-            # Sample a random batch of prompts
             batch_samples = random.sample(train_data, batch_size)
-            
-            # 1. Generate rollouts (completions, log_probs)
+
+            # 1️⃣ Generate rollouts
             rollout_data = generate_rollout_data(
                 model,
                 ref_model,
@@ -344,33 +362,40 @@ def train_with_grpo(model, tokenizer, train_data, num_iterations=1, num_steps=50
                 num_generations,
                 max_completion_length
             )
-            
-            # 2. Perform multiple optimization steps (PPO-style)
+
+            # 2️⃣ PPO-style updates with mixed precision
             for _ in range(mu):
-                loss, avg_reward = grpo_loss(
-                    model,
-                    ref_model,
-                    rollout_data,
-                    reward_function,
-                    beta=beta,
-                    epsilon=epsilon
-                )
-                
                 optimizer.zero_grad()
-                loss.backward()
+                
+                # Mixed precision context
+                with autocast():  
+                    loss, avg_reward = grpo_loss(
+                        model,
+                        ref_model,
+                        rollout_data,
+                        reward_function,
+                        beta=beta,
+                        epsilon=epsilon
+                    )
+
+                # Scaled backward pass
+                scaler.scale(loss).backward()
                 torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
-                optimizer.step()
-            
-            # Logging
-            print(f"Iter {iteration+1}, Step {step+1}/{num_steps}, Loss: {loss.item():.4f}, Avg Reward: {avg_reward:.2f}")
-            # if os.environ.get("WANDB_API_KEY"):
-            #     wandb.log({
-            #         "loss": loss.item(),
-            #         "average_reward": avg_reward,
-            #         "iteration": iteration + 1,
-            #         "step": step + 1,
-            #     })
+                scaler.step(optimizer)
+                scaler.update()
+
+                # Clear memory after each inner step
+                del loss
+                torch.cuda.empty_cache()
+
+            # Clear rollout_data after all inner iterations are done
+            del rollout_data
+            torch.cuda.empty_cache()
+
+            print(f"Iter {iteration+1}, Step {step+1}/{num_steps}, Avg Reward: {avg_reward:.2f}")
+
     return model
+
 
 # ==============================================================================
 # SECTION 6: EVALUATION (ADAPTED FOR PUBMEDQA)
@@ -426,4 +451,3 @@ def evaluate_model(model, tokenizer, eval_examples, device=None):
 # ==============================================================================
 # SECTION 7: MAIN EXECUTION BLOCK
 # ==============================================================================
-
