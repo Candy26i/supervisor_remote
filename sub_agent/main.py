@@ -2,8 +2,6 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from functions import prepare_pubmedqa_dataset, evaluate_model, train_with_grpo, combined_reward
 import random
-import os
-import wandb
 
 
 def main():
