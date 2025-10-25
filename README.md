@@ -26,6 +26,7 @@ docker run -it --gpus all \
   -e WANDB_PROJECT=GRPO-Qwen-PubMedQA-Manual \
   grpo-pubmedqa:latest
 (YOU CAN PROVIDE A MODEL NAME to replace sub agent model)
+(IF YOU WANT TO CHANGE THE MODEL YOU train you need to change it in main)
 ```
 
 ---
