@@ -25,7 +25,7 @@ docker run -it --gpus all \
   -e WANDB_API_KEY=your_key_here \
   -e WANDB_PROJECT=GRPO-Qwen-PubMedQA-Manual \
   grpo-pubmedqa:latest
-
+(YOU CAN PROVIDE A MODEL NAME to replace sub agent model)
 ```
 
 ---
