@@ -1,0 +1,544 @@
+[INFO] W&B initialized: GRPO-Qwen-PubMedQA-Manual/multi-agent-grpo-run
+
+[STAGE] Evaluating model before fine-tuning...
+[DEBUG] Evaluation using model type: <class 'transformers.models.qwen2.modeling_qwen2.Qwen2ForCausalLM'>
+[DEBUG] Model device: cuda:0
+[DEBUG] Model training mode before eval(): False
+[DEBUG] Standard model (no LoRA)
+
+==================================================
+STARTING SUPERVISOR EVALUATION ON 1 EXAMPLES
+==================================================
+
+[DEBUG] Parsed agent choice: context_analysis
+[DEBUG] Valid agents: {'reasoning', 'context_analysis', 'question_understanding', 'answering'}
+[DEBUG] Agent in valid agents: True
+
+[DEBUG] About to call sub-agent: context_analysis
+[DEBUG] Agent is valid, calling run_subagent...
+
+[DEBUG] Running sub-agent: context_analysis
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1636
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1132
+[DEBUG] Ollama response: Do not deviate from it in any way.
+
+<ContextAnalysis>
+    <KeyFacts>
+        <Fact>Surgical excision of ovarian endometriomas carries a risk of damaging healthy ovarian tissue.</Fact>
+        <Fact>A...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-agent call completed. Pred: no
+
+--- Example ---
+Expected: yes | Pred: no | Agent: context_analysis | Correct: ✗
+[Supervisor Message]
+ Just provide the agent name.
+Agent: context_analysis
+CA125 and CA72-4 were measured in 72 patients with ovarian endometriomas and 55 patients with ovarian cancer. High CA125 concentrations were observed in patients with ovarian endometriosis and in those with ovarian
+[Sub-agent Response]
+Do not deviate from it in any way.
+
+<ContextAnalysis>
+    <KeyFacts>
+        <Fact>Surgical excision of ovarian endometriomas carries a risk of damaging healthy ovarian tissue.</Fact>
+        <Fact>A correct diagnosis is crucial to avoid unexpected ovarian cancer misdiagnosis.</Fact>
+        <Fact>CA125 levels are high in both ovarian endometriomas and ovarian cancers, making it unsuitable for differentiation.</Fact>
+        <Fact>The study aimed to determine if CA72-4 can help differentiate between ovarian endometriosis and epithelial ovarian cancer.</Fact>
+        <Fact>In the study, high CA125 concentrations were observed in both conditions (endometriosis and cancer).</Fact>
+        <Fact>A significant difference in CA72-4 levels was found between women with ovarian cancer and those with endometriosis.</Fact>
+    </KeyFacts>
+    <Contradictions>
+        <Contradiction>The mention of high CA125 concentrations in both endometriomas and cancers contradicts the assertion that CA125 is not useful for discrimination, but rather indicates its limitations.</Contradiction>
+    </Contradictions>
+    <Relevance>
+        <
+--------------------------------------------------
+
+Evaluation Complete. Accuracy: 0.00% (0/1)
+==================================================
+
+[STAGE] Starting GRPO fine-tuning...
+Using device: cuda:0
+LoRA applied to q/k/v projections.
+C:\Users\madis\Desktop\supervisor_remote\supervisor\funtions.py:689: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+
+--- Starting GRPO Iteration 1/1 ---
+Reference model created.
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:    Reasoning: The passage discusses the relationship between different factors related to the selection procedures of dental students. It compares these factors with the academic performance of those entering dental education at the University of Ota...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1689
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1375
+[DEBUG] Ollama response: Do not deviate from it in any way.
+
+<reasoning>Step-by-step reasoning combining question and context:
+
+1. The study examined the association between performance in selection procedures (academic avera...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:   Reasoning: To answer this question, we need to analyze the correlation between the performance of dental students across different selection procedures and their overall academic success. We should consider whether any of these variables directly c...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1689
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1353
+[DEBUG] Ollama response: Do not include any additional context or information beyond what is provided.
+
+<reasoning>
+Step-by-step reasoning combining question and context:
+
+1. The study investigates the relationship between pe...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 2 / 2
+C:\Users\madis\Desktop\supervisor_remote\supervisor\funtions.py:726: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+Iter 1, Step 1/100, Avg Reward: 2.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:  Yes or no, explain your reasoning. Reasoning: To determine if the use of maternal mortality audit is solely a difference between the rich and the poor, we need to consider several factors related to access to healthcare and economic status.  Step 1:...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1714
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1232
+[DEBUG] Ollama response: Do not deviate from the format.
+<reasoning>Step-by-step reasoning combining question and context:
+
+1. The question asks if the use of audit for identifying maternal mortality differs between rich and ...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:    Reasoning: In the given context, the authors mention that maternal mortality audit identifies different causes of and contributing factors to maternal deaths in different settings across low- and high-income countries. They also compare results fr...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1714
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1291
+[DEBUG] Ollama response: Do not deviate from the format.
+
+<step><reasoning>From the given context, we can infer that maternal mortality audits reveal significant differences in the causes and characteristics of maternal death...
+[DEBUG] Extracted answer: yes
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 2 / 2
+Iter 1, Step 2/100, Avg Reward: 1.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:  To what age group does this belong? Reasoning: 1. The paper discusses breast-feeding and its effect on illness rates in children with a family history of atopy. 2. It states that "Family history of atopy was based on allergic diseases in family memb...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1761
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1311
+[DEBUG] Ollama response: Do not deviate from it in any way. Output only the required XML.
+
+<problem>
+<question>Is the breast best for children with a family history of atopy?</question>
+<context>Previous studies reported tha...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:   Reasoning: 1. The study focused on breast-feeding in children with a family history of atopy. 2. The researchers used a historic cohort approach to assess the effects of breast-feeding on illness rates. 3. The study analyzed information about the c...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1761
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1311
+[DEBUG] Ollama response: Do not deviate from the format. The response must be either "Answer: yes", "Answer: no", or "Answer: maybe". To determine the answer, carefully analyze the information provided in the context.
+(reason...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 2 / 2
+Iter 1, Step 3/100, Avg Reward: 0.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:  Yes Reasoning: To determine if the radiographic transition zone correlates with the level of aganglionosis, we need to consider how these two variables are related in Hirschsprung's disease.  Step-by-Step Reasoning Process:  1. **Understand the Vari...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1632
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1113
+[DEBUG] Ollama response: Do not deviate from it in any way.
+
+<Question>Does the radiographic transition zone correlate with the level of aganglionosis on the specimen in Hirschsprung's disease?</Question>
+<Context>...</Conte...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:  To determine if the radiographic transition zone correlates with the level of aganglionosis on the specimen in Hirschsprung's disease, we need to analyze the data from the given context:  Step-by-Step Reasoning Process: 1. The context mentions that ...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1632
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1121
+[DEBUG] Ollama response: Do not deviate from it in any way. Do not add or remove tags. reasoning>Step-by-step reasoning combining question and context:
+
+1. The study analyzes the correlation between the radiographic transitio...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 2 / 2
+Iter 1, Step 4/100, Avg Reward: 1.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:   Reasoning: The context discusses studies investigating the effects of 2-Methoxyestradiol (2ME) on the proliferation of human ovary cancer cells. It mentions that the results show an additive inhibitory effect of 2ME with various chemotherapeutic co...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1494
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1207
+[DEBUG] Ollama response: Do not deviate from it in any way. Do not include any explanation beyond the required reasoning and the final answer.
+
+<problem>Is the combination with 2-methoxyestradiol able to reduce the dosages o...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:  Yes Reasoning: To evaluate this statement about combining 2ME with chemotherapeutic agents in treating ovarian cancer, we need to consider several factors:  1. The context mentions that the study used human ovary cancer cell lines as models, indicat...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1494
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1021
+[DEBUG] Ollama response: Do not deviate from it in any way.
+<problem>Is the combination with 2-methoxyestradiol able to reduce the dosages of chemotherapeutices in the treatment of human ovarian cancer?</problem>
+"context:The...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 2 / 2
+Iter 1, Step 5/100, Avg Reward: 0.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:   Reasoning: Based on the information provided, we can see that fondaparinux is recommended as a bridging agent in perioperative settings, specifically for surgeries with high bleeding risk or neuraxial anesthesia. However, it's important to note tha...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 2072
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1202
+[DEBUG] Ollama response: Do not deviate from the format provided.
+<reasoning>Step-by-step reasoning combining question and context:
+
+1. The question asks if there is a role for fondaparinux in perioperative bridging.
+2. Conte...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:  Yes or no, explain your answer clearly.  Reasoning: To determine if fondaparinux has a role in perioperative bridging, we need to consider several factors related to its properties and clinical use. First, its extended half-life complicates its usag...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 2072
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1244
+[DEBUG] Ollama response: Do not deviate from the format provided.
+Output XML:
+<response>
+<answer>maybe</answer>
+<rationale>Fondaparinux has potential for perioperative bridging but its use is complicated by its extended half...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 2 / 2
+Iter 1, Step 6/100, Avg Reward: 1.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:    Reasoning: The study specifically mentions that the internal mammary chain only treatment was given to the tumor. The aim of this study is to evaluate local failure patterns, which includes the operation scar and chest wall. Given that the breast ...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1150
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1292
+[DEBUG] Ollama response: Use the format provided. Do not deviate.
+
+<reasoning>Step-by-step reasoning combining question and context:
+
+1. The question asks whether chest wall irradiation should be included after mastectomy for...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:   Reasoning: The given context describes a retrospective analysis of 92 internal or central breast cancer nodes, specifically targeting mastectomy followed by external radiation therapy. It mentions that local failure rates for this group range betwe...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1150
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1336
+[DEBUG] Ollama response: Do not include any additional context or information outside of what is given.
+<reasoning>Step-by-step reasoning combining question and context</reasoning>
+Answer: maybe
+
+The study evaluates the local...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 2 / 2
+Iter 1, Step 7/100, Avg Reward: 1.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:    Reasoning: The text states that the researchers compared 30-day and 180-day postadmission hospital mortality rates for all Medicare patients. This suggests that it might be sufficient to measure hospital mortality rates with these two intervals. H...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1877
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1219
+[DEBUG] Ollama response: Do not deviate from it in any way. Your task is to include only the required elements and attributes. Omit all other information or explanations.
+
+<problem><reasoning>Step-by-step reasoning combining ...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:    Reasoning: The given context discusses comparing 30-day and 180-day postadmission hospital mortality rates across different categories of cardiac care. It provides data from HCFA's hospital mortality datasets, ranks hospitals using both the 30-day...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1877
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1196
+[DEBUG] Ollama response: Do not deviate from it in any way. Do not add or remove tags.的理由:
+
+<reasoning>
+Step-by-step reasoning combining question and context:
+
+1. The question asks whether 30-day data are sufficient for measu...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 2 / 2
+Iter 1, Step 8/100, Avg Reward: 0.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:  Reasoning: To determine if there's a significant difference in outcomes between the groups based on a special interest in laparoscopy, we should consider whether patients in the Laparoscopic Specialist (LS) group had a higher success rate or fewer c...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1929
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1145
+[DEBUG] Ollama response: <reasoning>Step-by-step reasoning combining question and context
+1. The study compares the treatment outcomes of patients with acute cholecystitis (AC) between a laparoscopic specialist (LS) group and...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:    Reasoning: To determine if there's an association between the use of laparoscopic specialists and treatment outcomes for patients with acute cholecystitis, we need to examine whether there is any difference in patient outcomes based on whether the...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1929
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1145
+[DEBUG] Ollama response: Do not deviate from it in any way. Your task is to accurately convert the dialogue into the required format.
+<reasoning>The study provided a comparison between patients treated by laparoscopic special...
+[DEBUG] Extracted answer: yes
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 2 / 2
+Iter 1, Step 9/100, Avg Reward: 1.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:    Reasoning: To determine if a 4-diagram manual improves bystander CPR performance, we need to consider several factors:  1. Training duration: Experiments conducted show that inexperienced people can operate SADs even after brief instruction.  2. E...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 2121
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1130
+[DEBUG] Ollama response: Do not deviate from it in any way. The output should exactly match the XML structure provided below:
+
+<xml>
+<response>
+<reasoning>Step-by-step reasoning combining question and context</reasoning>
+Answ...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:  To answer this, I will follow these steps:  Step 1: Analyze the purpose of bystander resuscitation. Bystander resuscitation involves helping someone who has experienced a cardiac arrest.  Step 2: Examine the effectiveness of the Laryngeal Mask Supre...
+[DEBUG] Parsed Agent Choice: None
+[WARN] Invalid or missing agent choice — skipping sub-agent.
+
+[DEBUG] === Rollout Generation Complete ===
+[DEBUG] Total Generated: 2 completions
+[DEBUG] Valid agent decisions: 1 / 2
+Iter 1, Step 10/100, Avg Reward: 0.00
+
+[DEBUG] === Generating GRPO rollouts for 1 samples ===
+[DEBUG] Generating 2 completions per sample...
+[DEBUG] Decoded 2 supervisor outputs.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 1
+[DEBUG] Supervisor Output Preview:  Based on the information provided, what can be inferred about whether they should continue taking folic acid?  Reasoning: To determine if patients with rheumatoid arthritis should continue folic acid supplements long-term, we must first consider the...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 2058
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1410
+[DEBUG] Ollama response: Do not deviate from the structure.
+<re reasoning>
+From the provided context, we can see that the study aimed to investigate the impact of discontinuing folic acid (FA) supplementation in patients with...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-Agent 'reasoning' completed.
+
+----------------------------------------
+[DEBUG] Sample 1/1, Generation 2
+[DEBUG] Supervisor Output Preview:    Reasoning: To determine if patients with RA need to continue folic acid supplements long-term, we should consider several factors such as the presence of methotrexate toxicity, the theory behind its effects, and the effectiveness of methotrexate i...
+[DEBUG] Parsed Agent Choice: reasoning
+[DEBUG] Calling Sub-Agent: reasoning
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 2058
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+
+[INFO] Interrupted by user. Exiting...

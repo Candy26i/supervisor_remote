@@ -1,0 +1,6 @@
+{"time":"2025-10-25T09:45:44.101712-07:00","level":"INFO","msg":"stream: starting","core version":"0.22.2"}
+{"time":"2025-10-25T09:45:44.2818486-07:00","level":"INFO","msg":"stream: created new stream","id":"stuekwby"}
+{"time":"2025-10-25T09:45:44.2823505-07:00","level":"INFO","msg":"handler: started","stream_id":"stuekwby"}
+{"time":"2025-10-25T09:45:44.2890286-07:00","level":"INFO","msg":"stream: started","id":"stuekwby"}
+{"time":"2025-10-25T09:45:44.2890286-07:00","level":"INFO","msg":"writer: started","stream_id":"stuekwby"}
+{"time":"2025-10-25T09:45:44.2890286-07:00","level":"INFO","msg":"sender: started","stream_id":"stuekwby"}

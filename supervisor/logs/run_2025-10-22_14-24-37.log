@@ -1,0 +1,68 @@
+C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\accelerate\utils\modeling.py:808: UserWarning: Using primary device: cuda:0
+Loading model: Qwen/Qwen2.5-0.5B-Instruct...
+Model and tokenizer loaded.
+Data prepared. Training examples: 3, Evaluation examples: 2
+Weights & Biases initialized: project=GRPO-Qwen-PubMedQA-Manual, run=multi-agent-grpo-run
+
+Evaluating model before fine-tuning...
+
+==================================================
+STARTING SUPERVISOR EVALUATION ON 2 EXAMPLES
+==================================================
+
+[DEBUG] Parsed agent choice: context_analysis
+[DEBUG] Valid agents: {'reasoning', 'question_understanding', 'answering', 'context_analysis'}
+[DEBUG] Agent in valid agents: True
+
+[DEBUG] About to call sub-agent: context_analysis
+[DEBUG] Agent is valid, calling run_subagent...
+
+[DEBUG] Running sub-agent: context_analysis
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1987
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 3251
+[DEBUG] Ollama response: user: You are the Context-Analysis agent.
+Analyze the provided context: extract key facts, contradictions, and relevance to the question.
+Based on your analysis of the context, provide your best answe...
+[DEBUG] Extracted answer: yes
+[DEBUG] Sub-agent call completed. Pred: yes
+
+--- Example ---
+ [1m`wandb offline`[0m to turn off syncing.
+[34m[1mwandb[0m: Syncing run [33mmulti-agent-grpo-run[0m
+[34m[1mwandb[0m:  View project at [34m[4mhttps://wandb.ai/madisonlijingxuan-ucla/GRPO-Qwen-PubMedQA-Manual[0m
+[34m[1mwandb[0m:  View run at [34m[4mhttps://wandb.ai/madisonlijingxuan-ucla/GRPO-Qwen-PubMedQA-Manual/runs/x54g3rnh[0m
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor\main.py", line 140, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor\main.py", line 104, in main
+    evaluate_supervisor(model, tokenizer, eval_data, device)
+Error in sys.excepthook:
+Traceback (most recent call last):
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\contextlib.py", line 153, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\wandb\sdk\lib\wb_logging.py", line 106, in log_to_all_runs
+    yield
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\wandb\sdk\lib\console_capture.py", line 168, in write_with_callbacks
+    n = orig_write(s)
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor\main.py", line 15, in write
+    self.file.write(message)
+UnicodeEncodeError: 'gbk' codec can't encode character '\u2713' in position 186: illegal multibyte sequence
+
+Original exception was:
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor\main.py", line 140, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor\main.py", line 104, in main
+    evaluate_supervisor(model, tokenizer, eval_data, device)
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor\funtions.py", line 714, in evaluate_supervisor
+      File "C:\Users\madis\anaconda3\envs\openthought\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\wandb\sdk\lib\console_capture.py", line 168, in write_with_callbacks
+    n = orig_write(s)
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor\main.py", line 15, in write
+    self.file.write(message)
+UnicodeEncodeError: 'gbk' codec can't encode character '\u2713' in position 63: illegal multibyte sequence

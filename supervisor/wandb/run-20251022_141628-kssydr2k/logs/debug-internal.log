@@ -1,0 +1,11 @@
+{"time":"2025-10-22T14:16:30.6885479-07:00","level":"INFO","msg":"stream: starting","core version":"0.22.2"}
+{"time":"2025-10-22T14:16:31.1102583-07:00","level":"INFO","msg":"stream: created new stream","id":"kssydr2k"}
+{"time":"2025-10-22T14:16:31.1102583-07:00","level":"INFO","msg":"handler: started","stream_id":"kssydr2k"}
+{"time":"2025-10-22T14:16:31.1108338-07:00","level":"INFO","msg":"stream: started","id":"kssydr2k"}
+{"time":"2025-10-22T14:16:31.1113465-07:00","level":"INFO","msg":"sender: started","stream_id":"kssydr2k"}
+{"time":"2025-10-22T14:16:31.1113465-07:00","level":"INFO","msg":"writer: started","stream_id":"kssydr2k"}
+{"time":"2025-10-22T14:16:31.3407937-07:00","level":"INFO","msg":"stream: closing","id":"kssydr2k"}
+{"time":"2025-10-22T14:16:31.6194702-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-10-22T14:16:31.6194702-07:00","level":"INFO","msg":"handler: closed","stream_id":"kssydr2k"}
+{"time":"2025-10-22T14:16:31.6200133-07:00","level":"INFO","msg":"sender: closed","stream_id":"kssydr2k"}
+{"time":"2025-10-22T14:16:31.6200133-07:00","level":"INFO","msg":"stream: closed","id":"kssydr2k"}

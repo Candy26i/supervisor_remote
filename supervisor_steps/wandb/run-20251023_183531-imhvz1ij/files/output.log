@@ -1,0 +1,152 @@
+Weights & Biases initialized: project=GRPO-Qwen-PubMedQA-Manual, run=multi-agent-grpo-run
+
+Evaluating model before fine-tuning...
+
+Chained multi-agent evaluation:
+
+==================================================
+STARTING CHAINED SUPERVISOR EVALUATION ON 2 EXAMPLES
+Max steps per example: 3
+==================================================
+
+--- Processing Example ---
+
+[STEP 1/3]
+[DEBUG] Supervisor response: Explanation required: The chosen agent should provide an explanation for why this request is not suitable or how it can be addressed differently without changing the overall message. This will ensure that the supervisor provides a clear and concise response that addresses the specific issue at hand. If the chosen agent is not appropriate, the supervisor should explain their decision
+[DEBUG] Parsed agent choice: None
+[WARNING] Invalid agent 'None', skipping
+
+[STEP 2/3]
+[DEBUG] Supervisor response: Explanation required: The explanation should clearly state which specific agent you will call next based on the provided context. It should not include any irrelevant or extraneous information. Additionally, the explanation should be concise and to the point, requiring minimal interpretation or analysis.
+<agent> has been chosen to answer the question. Please provide your
+[DEBUG] Parsed agent choice: None
+[WARNING] Invalid agent 'None', skipping
+
+[STEP 3/3]
+[DEBUG] Supervisor response: Explanation required: The chosen agent should provide an accurate and relevant response based on the given context. The explanation should include the specific details or examples provided in the context to support the choice of the appropriate agent. If no suitable agent can be found, "No suitable agent" should be replied.
+In this case, the correct
+[DEBUG] Parsed agent choice: None
+[DEBUG] Max steps reached, forcing answering agent
+[DEBUG] Calling sub-agent: answering
+
+[DEBUG] Running sub-agent: answering
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1883
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 106
+[DEBUG] Ollama response:  Do not include explanations.
+<medHistoryRecording>maybe</medHistoryRecording>
+Answer: maybe
+Answer: maybe
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-agent response:  Do not include explanations.
+<medHistoryRecording>maybe</medHistoryRecording>
+Answer: maybe
+Answer: maybe...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Answering agent called, final answer: maybe
+
+--- Final Result ---
+Expected: yes | Final Pred: maybe | Correct: ✗
+Conversation history: 2 steps
+  1. supervisor: Chose answering (Explanation required: The chosen ...
+  2. answering:  Do not include explanations.
+<medHistoryRecording...
+--------------------------------------------------
+
+--- Processing Example ---
+
+[STEP 1/3]
+[DEBUG] Supervisor response: Explanation: The chosen agent should provide a different perspective on the given topic that does not rely on the previously mentioned information. The explanation should include the specific details of the task and how the chosen agent will address it effectively. The answer should also highlight the importance of the chosen agent in resolving the issue at hand. The reply
+[DEBUG] Parsed agent choice: None
+[WARNING] Invalid agent 'None', skipping
+
+[STEP 2/3]
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 129, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 89, in main
+    evaluate_supervisor_chained(model, tokenizer, eval_data, device, max_steps=3)
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 951, in evaluate_supervisor_chained
+    outputs = model.generate(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\utils\_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 2623, in generate
+    result = self._sample(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 3607, in _sample
+    outputs = model_forward(**model_inputs, return_dict=True)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 543, in forward
+    outputs: BaseModelOutputWithPast = self.model(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 431, in forward
+    layer_outputs = decoder_layer(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\modeling_layers.py", line 83, in __call__
+    return super().__call__(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 233, in forward
+    hidden_states = self.input_layernorm(hidden_states)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 200, in forward
+    variance = hidden_states.pow(2).mean(-1, keepdim=True)
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 129, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 89, in main
+    evaluate_supervisor_chained(model, tokenizer, eval_data, device, max_steps=3)
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 951, in evaluate_supervisor_chained
+    outputs = model.generate(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\utils\_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 2623, in generate
+    result = self._sample(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 3607, in _sample
+    outputs = model_forward(**model_inputs, return_dict=True)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 543, in forward
+    outputs: BaseModelOutputWithPast = self.model(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 431, in forward
+    layer_outputs = decoder_layer(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\modeling_layers.py", line 83, in __call__
+    return super().__call__(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 233, in forward
+    hidden_states = self.input_layernorm(hidden_states)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 200, in forward
+    variance = hidden_states.pow(2).mean(-1, keepdim=True)
+KeyboardInterrupt

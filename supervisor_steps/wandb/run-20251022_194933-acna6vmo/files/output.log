@@ -1,0 +1,352 @@
+Weights & Biases initialized: project=GRPO-Qwen-PubMedQA-Manual, run=multi-agent-grpo-run
+
+Evaluating model before fine-tuning...
+
+Chained multi-agent evaluation:
+
+==================================================
+STARTING CHAINED SUPERVISOR EVALUATION ON 2 EXAMPLES
+Max steps per example: 3
+==================================================
+
+--- Processing Example ---
+
+[STEP 1/3]
+[DEBUG] Supervisor response: Agent:" and nothing else.
+Question: How does the frequency and depth of medication history recorded in patient medical records vary among different specialties? To answer this question, we need to analyze the data collected from the study conducted on 123 physicians who documented the medication history of 900 randomly
+[DEBUG] Parsed agent choice: None
+[WARNING] Invalid agent 'None', skipping
+
+[STEP 2/3]
+[DEBUG] Supervisor response: Agent:" and nothing else.
+Question: How does the frequency and depth of medication history recorded in patient medical records vary among different specialties? To answer this question, we need to analyze the data provided about the frequency and depth of medication history recorded by physicians in various specialties. Specifically, we should look at
+[DEBUG] Parsed agent choice: None
+[WARNING] Invalid agent 'None', skipping
+
+[STEP 3/3]
+[DEBUG] Supervisor response: Agent:" and nothing else.
+Question: How does the frequency and depth of medication history recorded in patient medical records vary among different specialties? To answer this question, we need to analyze the data provided about the frequency and depth of medication history recorded by physicians in various specialties. Specifically, we should look at
+[DEBUG] Parsed agent choice: None
+[DEBUG] Max steps reached, forcing answering agent
+[DEBUG] Calling sub-agent: answering
+
+[DEBUG] Running sub-agent: answering
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1883
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 106
+[DEBUG] Ollama response:  Do not include explanations.
+<medHistoryRecording>maybe</medHistoryRecording>
+Answer: maybe
+Answer: maybe
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-agent response:  Do not include explanations.
+<medHistoryRecording>maybe</medHistoryRecording>
+Answer: maybe
+Answer: maybe...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Answering agent called, final answer: maybe
+
+--- Final Result ---
+Expected: yes | Final Pred: maybe | Correct: ✗
+Conversation history: 2 steps
+  1. supervisor: Chose answering: Agent:" and nothing else.
+Questio...
+  2. answering:  Do not include explanations.
+<medHistoryRecording...
+--------------------------------------------------
+
+--- Processing Example ---
+
+[STEP 1/3]
+[DEBUG] Supervisor response: Agent: context_analysis
+Explanation: The study described in the context provides information about the relationship between sublingual varices and hypertension. However, it does not explicitly state that sublingual varices are associated with hypertension. Therefore, we cannot make a definitive conclusion based
+[DEBUG] Parsed agent choice: context_analysis
+[DEBUG] Calling sub-agent: context_analysis
+
+[DEBUG] Running sub-agent: context_analysis
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 2057
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1024
+[DEBUG] Ollama response:  Do not deviate from the structure.
+
+<analysis>
+<key_facts>
+- This study aimed to investigate the connection between sublingual varices and hypertension.
+- 431 dental patients were observed, with tongue status and blood pressure documented.
+- Patients without a previous diagnosis of hypertension and with a blood pressure ≥ 140 mmHg and/or ≥ 90 mmHg at the dental clinic were further evaluated.
+- Two independent blinded observers graded sublingual varices on the photographs of the tongues into two categories: none/few (grade 0) or medium/severe (grade 1).
+- Statistical methods including Pearson's Chi-square test, Student's t-test, and multiple regression analysis were used.
+- An association was found between sublingual varices and hypertension (OR = 2.25, p<0.002).
+- Mean systolic blood pressure was higher in patients with grade 1 sublingual varices compared to those with grade 0 (132 mmHg vs. 123 mmHg, p<0.0001).
+- Mean diastolic blood pressure was also higher in patients with grade 1 sublingual varices (83 mm
+[DEBUG] Non-answering agent, no answer extraction
+[DEBUG] Sub-agent response:  Do not deviate from the structure.
+
+<analysis>
+<key_facts>
+- This study aimed to investigate the connection between sublingual varices and hypertension.
+- 431 dental patients were observed, with tongue status and blood pressure documented.
+- Patients without a previous diagnosis of hypertension and with a blood pressure ≥ 140 mmHg and/or ≥ 90 mmHg at the dental clinic were further evaluated.
+- Two independent blinded observers graded sublingual varices on the photographs of the tongues into two categories: none/few (grade 0) or medium/severe (grade 1).
+- Statistical methods including Pearson's Chi-square test, Student's t-test, and multiple regression analysis were used.
+- An association was found between sublingual varices and hypertension (OR = 2.25, p<0.002).
+- Mean systolic blood pressure was higher in patients with grade 1 sublingual varices compared to those with grade 0 (132 mmHg vs. 123 mmHg, p<0.0001).
+- Mean diastolic blood pressure was also higher in patients with grade 1 sublingual varices (83 mm...
+[DEBUG] Extracted answer: None
+
+[STEP 2/3]
+[DEBUG] Supervisor response: Agent: understanding
+Explanation: The task requires understanding the context provided and identifying the most appropriate next step based on the available information. Since the context discusses the relationship between
+[DEBUG] Parsed agent choice: None
+[WARNING] Invalid agent 'None', skipping
+
+[STEP 3/3]
+[DEBUG] Supervisor response: Agent: context_analysis
+Explanation: The study provided in the context analyzed the relationship between sublingual varices and hypertension. However, it did not explicitly state that sublingual varices are associated with hypertension. Therefore, we
+[DEBUG] Parsed agent choice: context_analysis
+[DEBUG] Max steps reached, forcing answering agent
+[DEBUG] Calling sub-agent: answering
+
+[DEBUG] Running sub-agent: answering
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1791
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 828
+[DEBUG] Ollama response:  No need to include explanation.
+<analysis>
+<key_facts>
+- This study aimed to investigate the connection between sublingual varices and hypertension.
+- 431 dental patients were observed, with tongue status and blood pressure documented.
+- Patients without a previous diagnosis of hypertension and with a blood pressure ≥ 140 mmHg and/or ≥ 90 mmHg at the dental clinic were further evaluated.
+- An association was found between sublingual varices and hypertension (OR = 2.25, p<0.002).
+Answer: maybe
+Answer: maybe Based on the provided context, an association was found between sublingual varices and hypertension, but further research is needed to confirm this relationship definitively. Answer: maybe. This is due to the observational nature of the study and the need for additional evidence to support causality. Answer: maybe
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-agent response:  No need to include explanation.
+<analysis>
+<key_facts>
+- This study aimed to investigate the connection between sublingual varices and hypertension.
+- 431 dental patients were observed, with tongue status and blood pressure documented.
+- Patients without a previous diagnosis of hypertension and with a blood pressure ≥ 140 mmHg and/or ≥ 90 mmHg at the dental clinic were further evaluated.
+- An association was found between sublingual varices and hypertension (OR = 2.25, p<0.002).
+Answer: maybe
+Answer: maybe Based on the provided context, an association was found between sublingual varices and hypertension, but further research is needed to confirm this relationship definitively. Answer: maybe. This is due to the observational nature of the study and the need for additional evidence to support causality. Answer: maybe...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Answering agent called, final answer: maybe
+
+--- Final Result ---
+Expected: yes | Final Pred: maybe | Correct: ✗
+Conversation history: 4 steps
+  1. supervisor: Chose context_analysis: Agent: context_analysis
+Ex...
+  2. context_analysis:  Do not deviate from the structure.
+
+<analysis>
+<k...
+  3. supervisor: Chose answering: Agent: context_analysis
+Explanati...
+  4. answering:  No need to include explanation.
+<analysis>
+<key_f...
+--------------------------------------------------
+
+Chained Evaluation Complete. Accuracy: 0.00% (0/2)
+==================================================
+
+Starting GRPO fine-tuning...
+Using device: cuda:0
+LoRA applied to q/k/v projections.
+C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py:658: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+
+--- Starting GRPO Iteration 1/1 ---
+Reference model created.
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1763
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1139
+[DEBUG] Ollama response:  Do not deviate from it in any way.
+
+<reasoning>Step-by-step reasoning</reasoning>
+<reasoning>
+To determine if the affinity column-mediated immunoassay (ACMIA) method is suitable as an alternative to the microparticle enzyme immunoassay (MEIA) method for blood tacrolimus assay, we need to consider several factors based on the provided context:
+
+1. **Correlation Analysis**: The study reports a strong correlation between the tacrolimus concentrations measured by the ACMIA method (n = 154) and those measured by the MEIA method (r = 0.84). This high correlation suggests that the ACMIA method yields similar results to the MEIA method, which is a crucial factor for considering it as an alternative.
+
+2. **Bland-Altman Plot**: The Bland-Altman plot shows no specific trends, indicating that the differences between the two methods are random and not systematically biased. This further supports the reliability of the ACMIA method compared to the MEIA method.
+
+3. **Influence of Hematocrit Levels**: Both the MEIA and ACMIA methods were unaffected by hematocrit levels. However, the difference between the two methods tended to be larger
+[DEBUG] Non-answering agent, no answer extraction
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1763
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1273
+[DEBUG] Ollama response:  Do not deviate from it in any way.
+<problem>Is the affinity column-mediated immunoassay method suitable as an alternative to the microparticle enzyme immunoassay method as a blood tacrolimus assay?</problem>
+<approach>Compare the results of the two methods and evaluate their consistency and influence factors.</approach>
+<rationale>The suitability of one method as an alternative to another is often based on the correlation between the results obtained by both methods, the presence of systematic errors, and the impact of various influencing factors such as hematocrit levels.</rationale>
+<method>We will compare the tacrolimus concentrations measured by the ACMIA and MEIA methods, examine the correlation coefficient, and analyze the Bland-Altman plot to assess the agreement between the two methods. We will also investigate whether the results are affected by hematocrit levels.</method>
+<results>The correlation coefficient (r = 0.84) indicates a strong positive relationship between the concentrations measured by the ACMIA and MEIA methods. The Bland-Altman plot does not show any specific trends, suggesting that there are no consistent systematic errors. Both methods are unaffected by hematocrit levels, but the difference between the two methods tends to be
+[DEBUG] Non-answering agent, no answer extraction
+C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py:695: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+Iter 1, Step 1/5, Avg Reward: -0.25
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1763
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1193
+[DEBUG] Ollama response:  Do not deviate from it in any way. Use the provided XML structure without modification.
+
+<problem>Is the affinity column-mediated immunoassay method suitable as an alternative to the microparticle enzyme immunoassay method as a blood tacrolimus assay?</problem>
+<approach>We will compare the results of the two methods in terms of correlation and influence on hematocrit levels.</approach>
+<result>The results of the two methods showed a high correlation (r = 0.84) and did not show significant trends when compared using a Bland-Altman plot. Both methods were unaffected by hematocrit levels, but the difference between the two methods tended to be larger in low hematocrit samples.</result>
+<conclusion>The affinity column-mediated immunoassay method appears to be a suitable alternative to the microparticle enzyme immunoassay method for blood tacrolimus assays, given the high correlation and lack of significant influence on hematocrit levels. However, caution should be exercised in low hematocrit samples.</conclusion>
+<rationale>Both the ACMIA and MEIA methods showed strong agreement, with a correlation coefficient of 0.84, indicating that they measure similar levels of tacrolimus.
+[DEBUG] Non-answering agent, no answer extraction
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1763
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1138
+[DEBUG] Ollama response:  Do not deviate from it in any way.
+
+<response>
+<reasoning>Step-by-step reasoning
+1. **Identify the Methods**: The two immunoassay methods being compared are the Affinity Column-Mediated Immunoassay (ACMIA) and the Microparticle Enzyme Immunoassay (MEIA).
+2. **Purpose of Comparison**: The comparison aims to determine if ACMIA can be used as an alternative to MEIA for blood tacrolimus assays in therapeutic drug monitoring.
+3. **Sample Characteristics**: 154 samples from kidney or liver transplant recipients were analyzed using both methods.
+4. **Correlation Analysis**: The correlation coefficient between the tacrolimus concentrations measured by ACMIA and MEIA was found to be r = 0.84, indicating a strong positive linear relationship.
+5. **Bland-Altman Plot**: This plot shows that there were no specific trends in the differences between the two methods, suggesting consistent performance across a range of concentrations.
+6. **Influence of Hematocrit**: Neither method was affected by hematocrit levels; however, the difference between the two methods tended to be larger in low hematocrit samples.
+7. **Conclusion**: Based on
+[DEBUG] Non-answering agent, no answer extraction
+Iter 1, Step 2/5, Avg Reward: -0.30
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1763
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1133
+[DEBUG] Ollama response:  Do not deviate from it in any way.
+
+<question>IsTheAffinityColumnMediatedImmunoassayMethodSuitableAsAnAlternativeToTheMicroparticleEnzymeImmunoassayMethodAsABloodTacrolimusAssay</question>
+<response>
+<reasoning>Step-by-step reasoning</reasoning>
+To determine if the affinity column-mediated immunoassay (ACMIA) method is suitable as an alternative to the microparticle enzyme immunoassay (MEIA) method for blood tacrolimus assays, we need to evaluate the following aspects:
+
+1. **Correlation Between Methods**:
+   - The study reports a strong correlation between the tacrolimus concentrations measured by the ACMIA method and the MEIA method (r = 0.84).
+   - This high correlation indicates that the two methods produce similar results, suggesting they can be used interchangeably without significant discrepancies.
+
+2. **Bland-Altman Plot**:
+   - The Bland-Altman plot shows no specific trends in the differences between the two methods.
+   - This absence of specific trends suggests that systematic errors do not predominantly affect one method over the other, further supporting their interchangeability.
+
+3. **Influence of Hem
+[DEBUG] Non-answering agent, no answer extraction
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1763
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 129, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 97, in main
+    trained_model = train_with_grpo(
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 681, in train_with_grpo
+    rollout_data = generate_rollout_data(
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 499, in generate_rollout_data
+    sub_out_text, _ = run_subagent(chosen, sample_i, conversation_history=None)  # pass the full sample dict
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 264, in run_subagent
+    text = call_ollama(OLLAMA_MODEL, messages)
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 235, in call_ollama
+    outputs = model.generate(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\utils\_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 2623, in generate
+    result = self._sample(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 3607, in _sample
+    outputs = model_forward(**model_inputs, return_dict=True)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 543, in forward
+    outputs: BaseModelOutputWithPast = self.model(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 431, in forward
+    layer_outputs = decoder_layer(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\modeling_layers.py", line 83, in __call__
+    return super().__call__(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 251, in forward
+    hidden_states = self.post_attention_layernorm(hidden_states)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1918, in __getattr__
+    def __getattr__(self, name: str) -> Any:
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 129, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 97, in main
+    trained_model = train_with_grpo(
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 681, in train_with_grpo
+    rollout_data = generate_rollout_data(
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 499, in generate_rollout_data
+    sub_out_text, _ = run_subagent(chosen, sample_i, conversation_history=None)  # pass the full sample dict
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 264, in run_subagent
+    text = call_ollama(OLLAMA_MODEL, messages)
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 235, in call_ollama
+    outputs = model.generate(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\utils\_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 2623, in generate
+    result = self._sample(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 3607, in _sample
+    outputs = model_forward(**model_inputs, return_dict=True)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 543, in forward
+    outputs: BaseModelOutputWithPast = self.model(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 431, in forward
+    layer_outputs = decoder_layer(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\modeling_layers.py", line 83, in __call__
+    return super().__call__(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1736, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1747, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\models\qwen2\modeling_qwen2.py", line 251, in forward
+    hidden_states = self.post_attention_layernorm(hidden_states)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\nn\modules\module.py", line 1918, in __getattr__
+    def __getattr__(self, name: str) -> Any:
+KeyboardInterrupt

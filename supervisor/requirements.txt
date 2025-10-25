@@ -1,0 +1,32 @@
+# ==============================
+# Multi-Agent QA System - Core Requirements
+# ==============================
+
+# --- PyTorch (CUDA or CPU variant handled by base image or install flag)
+# For Docker, the base image pytorch/pytorch already includes torch packages.
+# Uncomment below only if running outside Docker on a plain Python image:
+# torch
+# torchvision
+# torchaudio
+
+# --- Hugging Face & PEFT stack
+transformers>=4.30.0
+datasets>=2.12.0
+tokenizers>=0.13.0
+accelerate>=0.20.0
+peft>=0.4.0
+safetensors   # safe tensor serialization used by HF models
+
+# --- Utilities
+numpy>=1.21.0
+pandas>=2.0.0
+requests>=2.31.0
+tqdm>=4.65.0
+rich>=13.0.0
+
+# --- Interactive / development
+jupyter>=1.0.0
+ipykernel>=6.0.0
+
+# --- Weights & Biases
+wandb>=0.16.0 

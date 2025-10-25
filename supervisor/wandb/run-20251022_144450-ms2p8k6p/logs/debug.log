@@ -1,0 +1,26 @@
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_setup.py:_flush():81] Current SDK version is 0.22.2
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_setup.py:_flush():81] Configure stats pid to 12960
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_setup.py:_flush():81] Loading settings from C:\Users\madis\.config\wandb\settings
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_setup.py:_flush():81] Loading settings from C:\Users\madis\Desktop\supervisor_remote\supervisor\wandb\settings
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_init.py:setup_run_log_directory():705] Logging user logs to C:\Users\madis\Desktop\supervisor_remote\supervisor\wandb\run-20251022_144450-ms2p8k6p\logs\debug.log
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_init.py:setup_run_log_directory():706] Logging internal logs to C:\Users\madis\Desktop\supervisor_remote\supervisor\wandb\run-20251022_144450-ms2p8k6p\logs\debug-internal.log
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_init.py:init():832] calling init triggers
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_init.py:init():837] wandb.init called with sweep_config: {}
+config: {'num_iterations': 1, 'num_steps': 20, 'batch_size': 2, 'num_generations': 4, 'max_completion_length': 300, 'beta': 0.01, 'learning_rate': 5e-06, 'mu': 2, 'epsilon': 0.2, '_wandb': {}}
+2025-10-22 14:44:50,142 INFO    MainThread:12960 [wandb_init.py:init():880] starting backend
+2025-10-22 14:44:52,409 INFO    MainThread:12960 [wandb_init.py:init():883] sending inform_init request
+2025-10-22 14:44:52,425 INFO    MainThread:12960 [wandb_init.py:init():891] backend started and connected
+2025-10-22 14:44:52,426 INFO    MainThread:12960 [wandb_init.py:init():961] updated telemetry
+2025-10-22 14:44:52,447 INFO    MainThread:12960 [wandb_init.py:init():985] communicating run to backend with 90.0 second timeout
+2025-10-22 14:44:52,740 INFO    MainThread:12960 [wandb_init.py:init():1036] starting run threads in backend
+2025-10-22 14:44:52,885 INFO    MainThread:12960 [wandb_run.py:_console_start():2509] atexit reg
+2025-10-22 14:44:52,886 INFO    MainThread:12960 [wandb_run.py:_redirect():2357] redirect: wrap_raw
+2025-10-22 14:44:52,886 INFO    MainThread:12960 [wandb_run.py:_redirect():2426] Wrapping output streams.
+2025-10-22 14:44:52,886 INFO    MainThread:12960 [wandb_run.py:_redirect():2449] Redirects installed.
+2025-10-22 14:44:52,887 INFO    MainThread:12960 [wandb_init.py:init():1076] run started, returning control to user process
+2025-10-22 14:46:37,107 INFO    MainThread:12960 [wandb_run.py:_finish():2275] finishing run madisonlijingxuan-ucla/GRPO-Qwen-PubMedQA-Manual/ms2p8k6p
+2025-10-22 14:46:37,108 INFO    MainThread:12960 [wandb_run.py:_atexit_cleanup():2474] got exitcode: 0
+2025-10-22 14:46:37,108 INFO    MainThread:12960 [wandb_run.py:_restore():2456] restore
+2025-10-22 14:46:37,109 INFO    MainThread:12960 [wandb_run.py:_restore():2462] restore done
+2025-10-22 14:46:37,582 INFO    MainThread:12960 [wandb_run.py:_footer_sync_info():3872] logging synced files

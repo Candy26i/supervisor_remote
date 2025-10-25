@@ -1,0 +1,40 @@
+{
+  "os": "Windows-10-10.0.26200-SP0",
+  "python": "CPython 3.10.18",
+  "startedAt": "2025-10-24T02:06:19.778389Z",
+  "program": "C:\\Users\\madis\\Desktop\\supervisor_remote\\supervisor\\main.py",
+  "codePath": "supervisor\\main.py",
+  "codePathLocal": "main.py",
+  "git": {
+    "remote": "git@github.com:Candy26i/supervisor_remote.git",
+    "commit": "341303fbf7d24912f728f303d644c27e9a69ef57"
+  },
+  "email": "madisonlijingxuan@gmail.com",
+  "root": "C:\\Users\\madis\\Desktop\\supervisor_remote\\supervisor",
+  "host": "LJX",
+  "executable": "C:\\Users\\madis\\anaconda3\\envs\\openthought\\python.exe",
+  "cpu_count": 16,
+  "cpu_count_logical": 24,
+  "gpu": "NVIDIA GeForce RTX 4090",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "1023243448320",
+      "used": "933366403072"
+    }
+  },
+  "memory": {
+    "total": "34118762496"
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 4090",
+      "memoryTotal": "25757220864",
+      "cudaCores": 16384,
+      "architecture": "Ada",
+      "uuid": "GPU-0e1f759f-2805-74f2-d896-987233a5c7ee"
+    }
+  ],
+  "cudaVersion": "12.6",
+  "writerId": "n6rnbacrrrodukqqxln6euanslv7lya0"
+}

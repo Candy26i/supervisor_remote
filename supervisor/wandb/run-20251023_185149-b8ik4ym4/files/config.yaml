@@ -1,0 +1,85 @@
+_wandb:
+    value:
+        cli_version: 0.22.2
+        e:
+            yxrexdibxjzmzl6wcoydp38a5w9g66op:
+                codePath: supervisor\main.py
+                codePathLocal: main.py
+                cpu_count: 16
+                cpu_count_logical: 24
+                cudaVersion: "12.6"
+                disk:
+                    /:
+                        total: "1023243448320"
+                        used: "930558976000"
+                email: madisonlijingxuan@gmail.com
+                executable: C:\Users\madis\anaconda3\envs\openthought\python.exe
+                git:
+                    commit: 341303fbf7d24912f728f303d644c27e9a69ef57
+                    remote: git@github.com:Candy26i/supervisor_remote.git
+                gpu: NVIDIA GeForce RTX 4090
+                gpu_count: 1
+                gpu_nvidia:
+                    - architecture: Ada
+                      cudaCores: 16384
+                      memoryTotal: "25757220864"
+                      name: NVIDIA GeForce RTX 4090
+                      uuid: GPU-0e1f759f-2805-74f2-d896-987233a5c7ee
+                host: LJX
+                memory:
+                    total: "34118762496"
+                os: Windows-10-10.0.26200-SP0
+                program: C:\Users\madis\Desktop\supervisor_remote\supervisor\main.py
+                python: CPython 3.10.18
+                root: C:\Users\madis\Desktop\supervisor_remote\supervisor
+                startedAt: "2025-10-24T01:51:49.086075Z"
+                writerId: yxrexdibxjzmzl6wcoydp38a5w9g66op
+        m: []
+        python_version: 3.10.18
+        t:
+            "1":
+                - 1
+                - 11
+                - 41
+                - 49
+                - 51
+                - 71
+                - 105
+            "2":
+                - 1
+                - 11
+                - 41
+                - 49
+                - 51
+                - 71
+                - 98
+                - 105
+            "3":
+                - 2
+                - 13
+                - 16
+            "4": 3.10.18
+            "5": 0.22.2
+            "6": 4.53.0
+            "8":
+                - 3
+            "12": 0.22.2
+            "13": windows-amd64
+batch_size:
+    value: 2
+beta:
+    value: 0.01
+epsilon:
+    value: 0.2
+learning_rate:
+    value: 5e-06
+max_completion_length:
+    value: 300
+mu:
+    value: 2
+num_generations:
+    value: 4
+num_iterations:
+    value: 1
+num_steps:
+    value: 20

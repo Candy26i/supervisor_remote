@@ -1,0 +1,148 @@
+[INFO] W&B initialized: GRPO-Qwen-PubMedQA-Manual/multi-agent-grpo-run
+
+[STAGE] Evaluating model before fine-tuning...
+[DEBUG] Evaluation using model type: <class 'transformers.models.qwen2.modeling_qwen2.Qwen2ForCausalLM'>
+[DEBUG] Model device: cuda:0
+[DEBUG] Model training mode before eval(): False
+[DEBUG] Standard model (no LoRA)
+
+==================================================
+STARTING SUPERVISOR EVALUATION ON 1 EXAMPLES
+==================================================
+
+[DEBUG] Parsed agent choice: context_analysis
+[DEBUG] Valid agents: {'reasoning', 'context_analysis', 'question_understanding', 'answering'}
+[DEBUG] Agent in valid agents: True
+
+[DEBUG] About to call sub-agent: context_analysis
+[DEBUG] Agent is valid, calling run_subagent...
+
+[DEBUG] Running sub-agent: context_analysis
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1636
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1132
+[DEBUG] Ollama response: Do not deviate from it in any way.
+
+<ContextAnalysis>
+    <KeyFacts>
+        <Fact>Surgical excision of ovarian endometriomas carries a risk of damaging healthy ovarian tissue.</Fact>
+        <Fact>A...
+[DEBUG] Extracted answer: no
+[DEBUG] Sub-agent call completed. Pred: no
+
+--- Example ---
+Expected: yes | Pred: no | Agent: context_analysis | Correct: ✗
+[Supervisor Message]
+ Just provide the agent name.
+Agent: context_analysis
+CA125 and CA72-4 were measured in 72 patients with ovarian endometriomas and 55 patients with ovarian cancer. High CA125 concentrations were observed in patients with ovarian endometriosis and in those with ovarian
+[Sub-agent Response]
+Do not deviate from it in any way.
+
+<ContextAnalysis>
+    <KeyFacts>
+        <Fact>Surgical excision of ovarian endometriomas carries a risk of damaging healthy ovarian tissue.</Fact>
+        <Fact>A correct diagnosis is crucial to avoid unexpected ovarian cancer misdiagnosis.</Fact>
+        <Fact>CA125 levels are high in both ovarian endometriomas and ovarian cancers, making it unsuitable for differentiation.</Fact>
+        <Fact>The study aimed to determine if CA72-4 can help differentiate between ovarian endometriosis and epithelial ovarian cancer.</Fact>
+        <Fact>In the study, high CA125 concentrations were observed in both conditions (endometriosis and cancer).</Fact>
+        <Fact>A significant difference in CA72-4 levels was found between women with ovarian cancer and those with endometriosis.</Fact>
+    </KeyFacts>
+    <Contradictions>
+        <Contradiction>The mention of high CA125 concentrations in both endometriomas and cancers contradicts the assertion that CA125 is not useful for discrimination, but rather indicates its limitations.</Contradiction>
+    </Contradictions>
+    <Relevance>
+        <
+--------------------------------------------------
+
+Evaluation Complete. Accuracy: 0.00% (0/1)
+==================================================
+
+[STAGE] Starting GRPO fine-tuning...
+Using device: cuda:0
+LoRA applied to q/k/v projections.
+C:\Users\madis\Desktop\supervisor_remote\supervisor\funtions.py:596: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+
+--- Starting GRPO Iteration 1/1 ---
+Reference model created.
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1689
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1375
+[DEBUG] Ollama response: Do not deviate from it in any way.
+
+<reasoning>Step-by-step reasoning combining question and context:
+
+1. The study examined the association between performance in selection procedures (academic avera...
+[DEBUG] Extracted answer: no
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1689
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1353
+[DEBUG] Ollama response: Do not include any additional context or information beyond what is provided.
+
+<reasoning>
+Step-by-step reasoning combining question and context:
+
+1. The study investigates the relationship between pe...
+[DEBUG] Extracted answer: no
+C:\Users\madis\Desktop\supervisor_remote\supervisor\funtions.py:633: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with autocast():
+Iter 1, Step 1/100, Avg Reward: 2.00
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1714
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1232
+[DEBUG] Ollama response: Do not deviate from the format.
+<reasoning>Step-by-step reasoning combining question and context:
+
+1. The question asks if the use of audit for identifying maternal mortality differs between rich and ...
+[DEBUG] Extracted answer: no
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1714
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1291
+[DEBUG] Ollama response: Do not deviate from the format.
+
+<step><reasoning>From the given context, we can infer that maternal mortality audits reveal significant differences in the causes and characteristics of maternal death...
+[DEBUG] Extracted answer: yes
+Iter 1, Step 2/100, Avg Reward: 1.00
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1761
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1311
+[DEBUG] Ollama response: Do not deviate from it in any way. Output only the required XML.
+
+<problem>
+<question>Is the breast best for children with a family history of atopy?</question>
+<context>Previous studies reported tha...
+[DEBUG] Extracted answer: no
+Iter 1, Step 3/100, Avg Reward: 0.00
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1632
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1072
+[DEBUG] Ollama response: The reasoning should be clear and coherent, connecting the question to the provided context. Do not make assumptions not supported by the context. Include only the information given in the context.
+<r...
+[DEBUG] Extracted answer: no
+
+[DEBUG] Running sub-agent: reasoning
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1632
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+
+[INFO] Interrupted by user. Exiting...

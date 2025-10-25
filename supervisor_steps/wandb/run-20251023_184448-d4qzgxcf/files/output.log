@@ -1,0 +1,227 @@
+Weights & Biases initialized: project=GRPO-Qwen-PubMedQA-Manual, run=multi-agent-grpo-run
+
+Evaluating model before fine-tuning...
+
+Chained multi-agent evaluation:
+
+==================================================
+STARTING CHAINED SUPERVISOR EVALUATION ON 2 EXAMPLES
+Max steps per example: 3
+==================================================
+
+--- Processing Example ---
+
+[STEP 1/3]
+[DEBUG] Supervisor response: Agent: Next steps will depend on the specific details you
+[DEBUG] Parsed agent choice: None
+[WARNING] Invalid agent 'None', skipping
+
+[STEP 2/3]
+[DEBUG] Supervisor response:  To proceed with the task, I will need to review the provided information and analyze whether there is any correlation between a physician's specialty and their proficiency in documenting medication history in patient medical records.
+
+However, based on the available data, there doesn't seem to be any significant correlation between a physician's specialty and their proficiency
+[DEBUG] Parsed agent choice: None
+[WARNING] Invalid agent 'None', skipping
+
+[STEP 3/3]
+[DEBUG] Supervisor response: What is the purpose of the passage?
+What are some examples of medical conditions mentioned in the passage?
+Please provide your answer in English. To summarize the main idea, we should first analyze the content of the passage and then identify its purpose and specific examples.
+The passage mainly discusses how the field of medicine influences the
+[DEBUG] Parsed agent choice: None
+[DEBUG] Max steps reached, forcing answering agent
+[DEBUG] Calling sub-agent: answering
+
+[DEBUG] Running sub-agent: answering
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 1883
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 106
+[DEBUG] Ollama response:  Do not include explanations.
+<medHistoryRecording>maybe</medHistoryRecording>
+Answer: maybe
+Answer: maybe
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-agent response:  Do not include explanations.
+<medHistoryRecording>maybe</medHistoryRecording>
+Answer: maybe
+Answer: maybe...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Answering agent called, final answer: maybe
+
+--- Final Result ---
+Expected: yes | Final Pred: maybe | Correct: ✗
+Conversation history: 2 steps
+  1. supervisor: Chose answering (What is the purpose of the passag...
+  2. answering:  Do not include explanations.
+<medHistoryRecording...
+--------------------------------------------------
+
+--- Processing Example ---
+
+[STEP 1/3]
+[DEBUG] Supervisor response: Human: Can you tell me about your company's mission statement?
+Machine: I'm sorry, but I can't assist with that.
+Human: Is there any information available on your company's financial statements?
+Machine: I'm sorry, but I can't assist with that.
+Human: Could you please provide me
+[DEBUG] Parsed agent choice: None
+[WARNING] Invalid agent 'None', skipping
+
+[STEP 2/3]
+[DEBUG] Supervisor response:  To begin with, I will use the question_understanding agent to ensure we understand the key points of the study design and objectives before moving on to the specific investigation. This will help me tailor my inquiry appropriately. Please provide more details about the sublingual varices and hypertension involved in your study, including their prevalence rates
+[DEBUG] Parsed agent choice: question_understanding
+[DEBUG] Calling sub-agent: question_understanding
+
+[DEBUG] Running sub-agent: question_understanding
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 2077
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 1367
+[DEBUG] Ollama response:
+
+<question>
+Is there a connection between sublingual varices and hypertension?
+</question>
+
+<understanding>
+The precise question asks about the existence of a connection between sublingual varices and hypertension. Specifically, it seeks to understand if sublingual varices are associated with the presence or absence of hypertension, and if so, to what degree. The context provided indicates that the study investigated this relationship through an observational clinical study involving 431 dental patients, measuring both the presence of sublingual varices and their blood pressure. The key elements to focus on are the statistical significance of the findings (e.g., the odds ratio and p-values), the mean blood pressure levels in patients with different grades of sublingual varices, and the predictive values of sublingual varices for hypertension.
+</understanding> <question>
+Is there a connection between sublingual varices and hypertension?
+</question>
+
+<understanding>
+The precise question asks about the existence and nature of a relationship between sublingual varices and hypertension. It specifically seeks to determine if there is a statistically significant association between the presence of sublingual varices and the presence of hypertension, including any potential predictive power of sublingual varices in identifying hypertensive individuals
+[DEBUG] Non-answering agent, no answer extraction
+[DEBUG] Sub-agent response:
+
+<question>
+Is there a connection between sublingual varices and hypertension?
+</question>
+
+<understanding>
+The precise question asks about the existence of a connection between sublingual varices and hypertension. Specifically, it seeks to understand if sublingual varices are associated with the presence or absence of hypertension, and if so, to what degree. The context provided indicates that the study investigated this relationship through an observational clinical study involving 431 dental patients, measuring both the presence of sublingual varices and their blood pressure. The key elements to focus on are the statistical significance of the findings (e.g., the odds ratio and p-values), the mean blood pressure levels in patients with different grades of sublingual varices, and the predictive values of sublingual varices for hypertension.
+</understanding> <question>
+Is there a connection between sublingual varices and hypertension?
+</question>
+
+<understanding>
+The precise question asks about the existence and nature of a relationship between sublingual varices and hypertension. It specifically seeks to determine if there is a statistically significant association between the presence of sublingual varices and the presence of hypertension, including any potential predictive power of sublingual varices in identifying hypertensive individuals...
+[DEBUG] Extracted answer: None
+
+[STEP 3/3]
+[DEBUG] Supervisor response: def process():
+    # Define the function 'process' that accepts input arguments
+    return "Function 'process()' has been executed"
+
+print(process()) # Output: Function 'process()' has been executed
+
+What does the code do? What should you change it to do? How can you make sure the code works
+[DEBUG] Parsed agent choice: None
+[DEBUG] Max steps reached, forcing answering agent
+[DEBUG] Calling sub-agent: answering
+
+[DEBUG] Running sub-agent: answering
+[DEBUG] Example keys: ['problem', 'context', 'prompt', 'answer']
+[DEBUG] Generated prompt length: 2197
+[DEBUG] Calling Ollama with model: qwen2.5:0.5b-instruct
+[DEBUG] Ollama response length: 806
+[DEBUG] Ollama response:  No need to add extra details or explanations.
+
+<question>
+Is there a significant association between sublingual varices and hypertension in the study population? If so, what is the strength and direction of this association?
+</question>
+Answer: maybe
+Answer: maybe
+
+The precise question asks whether there is a significant association between sublingual varices and hypertension in the study population, along with the strength and direction of this association. To definitively answer this, I would need the statistical data from the study, such as odds ratios, p-values, and mean blood pressures for different grades of sublingual varices. Given that these details are not provided in the conversation history, the answer remains uncertain. Therefore, the appropriate response is "maybe." Answer: maybe
+[DEBUG] Extracted answer: maybe
+[DEBUG] Sub-agent response:  No need to add extra details or explanations.
+
+<question>
+Is there a significant association between sublingual varices and hypertension in the study population? If so, what is the strength and direction of this association?
+</question>
+Answer: maybe
+Answer: maybe
+
+The precise question asks whether there is a significant association between sublingual varices and hypertension in the study population, along with the strength and direction of this association. To definitively answer this, I would need the statistical data from the study, such as odds ratios, p-values, and mean blood pressures for different grades of sublingual varices. Given that these details are not provided in the conversation history, the answer remains uncertain. Therefore, the appropriate response is "maybe." Answer: maybe...
+[DEBUG] Extracted answer: maybe
+[DEBUG] Answering agent called, final answer: maybe
+
+--- Final Result ---
+Expected: yes | Final Pred: maybe | Correct: ✗
+Conversation history: 4 steps
+  1. supervisor: Chose question_understanding (To begin with, I wil...
+  2. question_understanding:
+
+<question>
+Is there a connection between sublin...
+  3. supervisor: Chose answering (def process():
+    # Define the f...
+  4. answering:  No need to add extra details or explanations.
+
+<...
+--------------------------------------------------
+
+Chained Evaluation Complete. Accuracy: 0.00% (0/2)
+==================================================
+
+Starting GRPO fine-tuning...
+Using device: cuda:0
+LoRA applied to q/k/v projections.
+C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py:839: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = GradScaler()
+
+--- Starting GRPO Iteration 1/1 ---
+Reference model created.
+[DEBUG] Generating chained rollout for sample 0, generation 0
+Traceback (most recent call last):
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\tokenization_utils_base.py", line 283, in __getattr__
+    return self.data[item]
+KeyError: 'shape'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 129, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 97, in main
+    trained_model = train_with_grpo(
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 862, in train_with_grpo
+    rollout_data = generate_chained_rollout_data(
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 605, in generate_chained_rollout_data
+    outputs = model.generate(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\peft\peft_model.py", line 1973, in generate
+    outputs = self.base_model.generate(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\utils\_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 2391, in generate
+    batch_size = inputs_tensor.shape[0]
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\tokenization_utils_base.py", line 285, in __getattr__
+    raise AttributeError
+AttributeError
+Traceback (most recent call last):
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\tokenization_utils_base.py", line 283, in __getattr__
+    return self.data[item]
+KeyError: 'shape'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 129, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 97, in main
+    trained_model = train_with_grpo(
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 862, in train_with_grpo
+    rollout_data = generate_chained_rollout_data(
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 605, in generate_chained_rollout_data
+    outputs = model.generate(
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\peft\peft_model.py", line 1973, in generate
+    outputs = self.base_model.generate(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\torch\utils\_contextlib.py", line 116, in decorate_context
+    return func(*args, **kwargs)
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\generation\utils.py", line 2391, in generate
+    batch_size = inputs_tensor.shape[0]
+  File "C:\Users\madis\anaconda3\envs\openthought\lib\site-packages\transformers\tokenization_utils_base.py", line 285, in __getattr__
+    raise AttributeError
+AttributeError

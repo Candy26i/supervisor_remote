@@ -1,0 +1,42 @@
+_wandb:
+    value:
+        cli_version: 0.22.2
+        m: []
+        python_version: 3.10.18
+        t:
+            "1":
+                - 1
+                - 11
+                - 41
+                - 49
+                - 51
+                - 71
+                - 105
+            "3":
+                - 13
+                - 16
+            "4": 3.10.18
+            "5": 0.22.2
+            "6": 4.53.0
+            "8":
+                - 3
+            "12": 0.22.2
+            "13": windows-amd64
+batch_size:
+    value: 2
+beta:
+    value: 0.01
+epsilon:
+    value: 0.2
+learning_rate:
+    value: 5e-06
+max_completion_length:
+    value: 300
+mu:
+    value: 2
+num_generations:
+    value: 4
+num_iterations:
+    value: 1
+num_steps:
+    value: 20

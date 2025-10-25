@@ -1,0 +1,11 @@
+{"time":"2025-10-23T19:04:25.4010736-07:00","level":"INFO","msg":"stream: starting","core version":"0.22.2"}
+{"time":"2025-10-23T19:04:25.5753631-07:00","level":"INFO","msg":"stream: created new stream","id":"xkioydwa"}
+{"time":"2025-10-23T19:04:25.5753631-07:00","level":"INFO","msg":"handler: started","stream_id":"xkioydwa"}
+{"time":"2025-10-23T19:04:25.5758828-07:00","level":"INFO","msg":"stream: started","id":"xkioydwa"}
+{"time":"2025-10-23T19:04:25.5758828-07:00","level":"INFO","msg":"sender: started","stream_id":"xkioydwa"}
+{"time":"2025-10-23T19:04:25.5758828-07:00","level":"INFO","msg":"writer: started","stream_id":"xkioydwa"}
+{"time":"2025-10-23T19:04:25.9522614-07:00","level":"INFO","msg":"stream: closing","id":"xkioydwa"}
+{"time":"2025-10-23T19:04:26.3605448-07:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-10-23T19:04:26.4553225-07:00","level":"INFO","msg":"handler: closed","stream_id":"xkioydwa"}
+{"time":"2025-10-23T19:04:26.4558282-07:00","level":"INFO","msg":"sender: closed","stream_id":"xkioydwa"}
+{"time":"2025-10-23T19:04:26.4558282-07:00","level":"INFO","msg":"stream: closed","id":"xkioydwa"}

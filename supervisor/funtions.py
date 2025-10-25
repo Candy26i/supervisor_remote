@@ -20,7 +20,8 @@ torch.cuda.empty_cache()
 # Hugging Face libraries
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset
-
+import wandb
+import os
 def set_random_seed(seed: int = 42):
     """Sets the random seed for reproducibility."""
     random.seed(seed)
@@ -68,28 +69,6 @@ def build_supervisor_prompt(example: dict) -> str:
     )
 
 
-VALID_AGENTS = {
-    "question_understanding",
-    "context_analysis",
-    "reasoning",
-    "answering",
-}
-
-AGENT_NAME_PATTERN = re.compile(
-    r"^\s*Agent:\s*(question_understanding|context_analysis|reasoning|answering)\b",
-    flags=re.IGNORECASE | re.MULTILINE,
-)
-
-def parse_supervisor_choice(text: str):
-    """Return normalized agent name (or None) and the (start,end) char span of the 'Agent: <name>' line."""
-    m = AGENT_NAME_PATTERN.search(text)
-    if not m:
-        return "Answering", None
-    raw = m.group(1).lower().strip()
-    if raw not in VALID_AGENTS:
-        return "Answering", None
-    return raw  # (name, (start,end) of the Agent: line)
-
 
 VALID_AGENTS = {
     "question_understanding",
@@ -132,7 +111,7 @@ def build_prompt(messages):
     """Builds a single prompt string from a list of messages."""
     return "\n".join([msg["content"].strip() for msg in messages])
 
-def prepare_pubmedqa_dataset(csv_file_path="pubmedqa.csv"):
+def prepare_pubmedqa_dataset(csv_file_path="pubmedqa_5.csv"):
     """Loads and prepares the PubMedQA dataset from a CSV file."""
     formatted_data = []
     with open(csv_file_path, 'r', encoding='utf-8') as f:
@@ -211,70 +190,48 @@ def build_subagent_prompt(agent_name: str, example: dict) -> str:
         f"{sys}\n\n"
         f"Problem:\n{example['problem']}\n\n"
         f"Context:\n{example['context']}\n\n"
-        "Follow the specified XML output strictly."
     )
 
+from transformers import AutoModelForCausalLM, AutoTokenizer
+import torch, os
 
+# Load once globally (outside training loop)
 
-# def call_ollama_chat(model: str, messages: list, temperature: float = 1.0,
-#                      top_p: float = 0.95, max_tokens: int = 256,
-#                      url: str = "http://localhost:11434/api/chat") -> str:
-#     payload = {
-#         "model": model,
-#         "messages": messages,
-#         "stream": False,
-#         "options": {
-#             "temperature": temperature,
-#             "top_p": top_p,
-#             "num_predict": max_tokens,
-#         }
-#     }
-#     r = requests.post(url, json=payload, timeout=120)
-#     # If you're on an older Ollama that lacks /api/chat, this may 404:
-#     if r.status_code == 404:
-#         raise RuntimeError("This Ollama version does not support /api/chat. Use /api/generate or upgrade Ollama.")
-#     r.raise_for_status()
-#     data = r.json()
-#     return data.get("message", {}).get("content", "")  # chat returns 'message'
-def call_ollama(model, messages, url="http://localhost:11434/api/chat",
-                     temperature=0.8, top_p=0.95, max_tokens=256):
-    # Validate messages
-    assert isinstance(messages, list) and messages, "messages must be a non-empty list"
-    for m in messages:
-        assert isinstance(m, dict), "each message must be a dict"
-        assert m.get("role") in {"system", "user", "assistant"}, f"bad role: {m}"
-        assert isinstance(m.get("content"), str) and m["content"], f"empty content: {m}"
+HF_MODEL = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-7B-Instruct")
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
-    # Minimal payload first (no options). If this works, add options next.
-    payload = {
-        "model": model,
-        "messages": messages,
-        "stream": False
-    }
+tokenizer = AutoTokenizer.from_pretrained(HF_MODEL)
+model_hf = AutoModelForCausalLM.from_pretrained(
+    HF_MODEL,
+    torch_dtype=torch.float16,
+    device_map="auto"
+)
 
-    r = requests.post(url, json=payload, timeout=120)
-    if r.status_code >= 400:
-        raise RuntimeError(f"Ollama chat error {r.status_code}: {r.text}\nPayload: {payload}")
-    data = r.json()
-    return data.get("message", {}).get("content", "")
-# def call_ollama(model: str, prompt: str, temperature: float = 0.8, top_p: float = 0.95, max_tokens: int = 256):
-#     """Calls Ollama local server. Assumes `ollama serve` is running."""
-#     url = "http://localhost:11434/api/chat"
-#     payload = {
-#         "model": model,
-#         "prompt": prompt,
-#         "stream": False,
-#         "options": {
-#             "temperature": temperature,
-#             "top_p": top_p,
-#             "num_predict": max_tokens,
-#         }
-#     }
-#     r = requests.post(url, data=_json.dumps(payload), timeout=120)
-#     r.raise_for_status()
-#     data = r.json()
-#     # Ollama returns {"response": "...", ...}
-#     return data.get("response", "")
+def call_ollama(model_name, messages, temperature=0.8, top_p=0.95, max_tokens=256):
+    """
+    Calls the local model and returns only the newly generated text
+    (excluding the input prompt).
+    """
+    # Combine messages into one text block
+    prompt = "\n".join(f"{m['role']}: {m['content']}" for m in messages)
+    inputs = tokenizer(prompt, return_tensors="pt").to(DEVICE)
+
+    with torch.no_grad():
+        outputs = model_hf.generate(
+            **inputs,
+            max_new_tokens=max_tokens,
+            temperature=temperature,
+            top_p=top_p,
+            do_sample=True
+        )
+
+    # Decode only the NEW tokens (excluding the input prompt)
+    input_len = inputs["input_ids"].shape[1]
+    new_tokens = outputs[0][input_len:]
+    decoded = tokenizer.decode(new_tokens, skip_special_tokens=True)
+
+    return decoded.strip()
+
 
 def run_subagent(agent_name: str, example: dict):
     """Execute the chosen agent with Ollama and extract final yes/no if present."""
@@ -375,9 +332,6 @@ def combined_reward(prompts, completions, answer, **kwargs):
 # SECTION 3.5: CORE GRPO/PPO LOGIC Supervisor
 # ==============================================================================
 
-# ==============================================================================
-# SECTION 4: CORE GRPO/PPO LOGIC (IMITATED FROM EXAMPLE)
-# ==============================================================================
 
 def selective_log_softmax(logits, input_ids):
     """Computes log probabilities for specific tokens."""
@@ -410,7 +364,10 @@ def create_completion_mask(completion_ids, eos_token_id):
 def generate_completions(model, tokenizer, prompts, num_generations=4, max_completion_length=128):
     """Generates multiple completions for each prompt."""
     device = model.device if hasattr(model, 'device') else next(model.parameters()).device
-    inputs = tokenizer(prompts, return_tensors="pt", padding=True, padding_side="left")
+    tokenizer.padding_side = "left"
+    if tokenizer.pad_token_id is None:
+        tokenizer.pad_token_id = tokenizer.eos_token_id
+    inputs = tokenizer(prompts, return_tensors="pt", padding=True, truncation=True).to(device)
     # set once after loading the tokenizer
     tokenizer.padding_side = "left"
     if tokenizer.pad_token_id is None:
@@ -430,7 +387,7 @@ def generate_completions(model, tokenizer, prompts, num_generations=4, max_compl
         attention_mask=repeated_prompt_mask,
         max_new_tokens=max_completion_length,
         do_sample=True,
-        temperature=1.0,
+        temperature=0.3,
         pad_token_id=tokenizer.pad_token_id,
         eos_token_id=tokenizer.eos_token_id,
     )
@@ -440,77 +397,97 @@ def generate_completions(model, tokenizer, prompts, num_generations=4, max_compl
     
     return prompt_ids, prompt_mask, completion_ids, completion_mask
 
+
 def generate_rollout_data(model, ref_model, tokenizer, batch_samples, num_generations, max_completion_length):
-    """Generates data for GRPO rollouts including completions and log probabilities."""
-    prompts = [sample["prompt"] for sample in batch_samples]
-    answers = [sample["answer"] for sample in batch_samples]
+    """Generates data for GRPO rollouts including completions, log probabilities, and debug traces."""
     
+    print(f"\n[DEBUG] === Generating GRPO rollouts for {len(batch_samples)} samples ===")
+
+    # prompts = [sample["prompt"] for sample in batch_samples]
+    prompts = [build_supervisor_prompt(sample) for sample in batch_samples]
+
+    print(f"[DEBUG] Prompts in generate_rollout_data: {prompts}")
+    answers = [sample["answer"] for sample in batch_samples]
+
+    # ---- 1️⃣ Generate completions ----
+    print(f"[DEBUG] Generating {num_generations} completions per sample...")
     with torch.no_grad():
         prompt_ids, prompt_mask, completion_ids, completion_mask = generate_completions(
             model, tokenizer, prompts, num_generations, max_completion_length
         )
-        
-        # We need the original prompts repeated for log prob calculation
+
         repeated_prompt_ids = prompt_ids.repeat_interleave(num_generations, dim=0)
         repeated_prompt_mask = prompt_mask.repeat_interleave(num_generations, dim=0)
-        
         completion_attn = (completion_ids != tokenizer.pad_token_id).long()
+
         input_ids = torch.cat([repeated_prompt_ids, completion_ids], dim=1)
         attention_mask = torch.cat([repeated_prompt_mask, completion_attn], dim=1)
         logits_to_keep = completion_ids.size(1)
-        # compute_log_probs needs a model on a single device, so we use .module
-        # if it is wrapped in DataParallel
+
         policy_model = model.module if isinstance(model, nn.DataParallel) else model
         reference_model = ref_model.module if isinstance(ref_model, nn.DataParallel) else ref_model
 
         old_log_probs = compute_log_probs(policy_model, input_ids, attention_mask, logits_to_keep)
         ref_log_probs = compute_log_probs(reference_model, input_ids, attention_mask, logits_to_keep)
+
+    # ---- 2️⃣ Decode supervisor outputs ----
     texts = tokenizer.batch_decode(completion_ids.detach().cpu(), skip_special_tokens=True)
+    print(f"[DEBUG] Decoded {len(texts)} supervisor outputs.")
 
-    # chosen agents + subagent outputs (to feed your reward fn)
-    chosen_agents = []
-    sub_texts = []
+    chosen_agents, sub_texts, action_masks = [], [], []
 
-    # simple action mask: first few non-pad tokens (focus gradients on routing decision)
-    action_masks = []
+    # ---- 3️⃣ Process each supervisor output ----
     for i, text in enumerate(texts):
+        base_idx = i // num_generations
+        sample = batch_samples[base_idx]
+
+        # Parse supervisor decision
         chosen = parse_supervisor_choice(text)
         chosen_agents.append(chosen if chosen in VALID_AGENTS else None)
 
-        # Map to base sample (which problem/context)
-        base_idx = i // num_generations
-        sample_i = batch_samples[base_idx]   # get the full sample dict
+        print("\n----------------------------------------")
+        print(f"[DEBUG] Sample {base_idx + 1}/{len(batch_samples)}, Generation {i + 1}")
+        print(f"[DEBUG] Supervisor Output Preview: {text[:250].replace(chr(10), ' ')}{'...' if len(text) > 250 else ''}")
+        print(f"[DEBUG] Parsed Agent Choice: {chosen}")
 
+        # ---- 4️⃣ Run corresponding sub-agent ----
         if chosen in VALID_AGENTS:
-            sub_out_text, _ = run_subagent(chosen, sample_i)  # pass the full sample dict
+            print(f"[DEBUG] Calling Sub-Agent: {chosen}")
+            sub_out_text, _ = run_subagent(chosen, sample)
             sub_texts.append(sub_out_text)
+            print(f"[DEBUG] Sub-Agent '{chosen}' completed.")
         else:
+            print("[WARN] Invalid or missing agent choice — skipping sub-agent.")
             sub_texts.append("")
 
-        # Build a small front-span mask over completion tokens
-        comp_ids_row = completion_ids[i]
-        valid_len = int((comp_ids_row != tokenizer.pad_token_id).sum().item())
-        L = min(8, valid_len)   # first 8 tokens
-        m = torch.zeros_like(comp_ids_row, dtype=torch.long)
+        # ---- 5️⃣ Build action mask ----
+        comp_row = completion_ids[i]
+        valid_len = int((comp_row != tokenizer.pad_token_id).sum().item())
+        L = min(8, valid_len)
+        mask = torch.zeros_like(comp_row, dtype=torch.long)
         if L > 0:
-            m[:L] = 1
-        action_masks.append(m)
+            mask[:L] = 1
+        action_masks.append(mask)
 
     action_mask = torch.stack(action_masks, dim=0).to(input_ids.device)
 
-    # Your reward function expects this shape:
-    formatted_subagent_completions = [[{'content': t}] for t in sub_texts]
+    # ---- 6️⃣ Prepare rollout dictionary ----
+    formatted_completions = [[{'content': t}] for t in sub_texts]
     repeated_prompts = [p for p in prompts for _ in range(num_generations)]
     repeated_answers = [a for a in answers for _ in range(num_generations)]
+
+    print(f"\n[DEBUG] === Rollout Generation Complete ===")
+    print(f"[DEBUG] Total Generated: {len(formatted_completions)} completions")
+    print(f"[DEBUG] Valid agent decisions: {sum(a is not None for a in chosen_agents)} / {len(chosen_agents)}")
 
     return {
         "input_ids": input_ids,
         "attention_mask": attention_mask,
-        "completion_mask": completion_mask,             # kept (unused for loss now)
-        "action_mask": action_mask,                     # <-- NEW: use this in loss
+        "completion_mask": completion_mask,
+        "action_mask": action_mask,
         "old_log_probs": old_log_probs,
         "ref_log_probs": ref_log_probs,
-        "formatted_completions": formatted_subagent_completions,  # <-- feed to your reward
+        "formatted_completions": formatted_completions,
         "repeated_prompts": repeated_prompts,
         "repeated_answers": repeated_answers,
         "logits_to_keep": logits_to_keep,
@@ -518,8 +495,8 @@ def generate_rollout_data(model, ref_model, tokenizer, batch_samples, num_genera
         "num_generations": num_generations
     }
 
-def grpo_loss(model, ref_model, rollout_data, reward_function, beta=0.01, epsilon=0.2):
-    """Computes the GRPO loss for updating the policy model."""
+def grpo_loss(model, ref_model, rollout_data, reward_function, beta=0.01, epsilon=0.2, target_kl=0.01):
+    """Computes the GRPO loss for updating the policy model with dynamic KL controller."""
     device = next(model.parameters()).device
     
     # Unpack rollout data
@@ -546,15 +523,21 @@ def grpo_loss(model, ref_model, rollout_data, reward_function, beta=0.01, epsilo
         dtype=torch.float32,
         device=device
     )
-    
+
     # Standardize rewards at the group level (GRPO)
     batch_size = rollout_data["batch_size"]
     num_generations = rollout_data["num_generations"]
-    rewards_grouped = rewards.view(batch_size, num_generations)
     
-    mean_rewards = rewards_grouped.mean(dim=1, keepdim=True)
-    std_rewards = rewards_grouped.std(dim=1, keepdim=True)
-    advantages = (rewards_grouped - mean_rewards) / (std_rewards + 1e-8)
+    # Group rewards by prompts (num_prompts, k)
+    num_prompts = batch_size
+    k = num_generations
+    group_rewards = rewards.view(num_prompts, k)
+    mean_R = group_rewards.mean(dim=-1, keepdim=True)
+    std_R = group_rewards.std(dim=-1, keepdim=True)
+    advantages = (group_rewards - mean_R) / (std_R + 1e-8)
+    
+    # Additional advantages normalization
+    advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-8)
     advantages = advantages.view(-1).unsqueeze(1) # Flatten back for token-wise multiplication
     
     # PPO Clipped Surrogate Objective
@@ -562,7 +545,15 @@ def grpo_loss(model, ref_model, rollout_data, reward_function, beta=0.01, epsilo
     surr2 = torch.clamp(ratio, 1 - epsilon, 1 + epsilon) * advantages
     surrogate_loss = torch.min(surr1, surr2)
     
-    # KL Penalty
+    # Dynamic KL controller (same as PPO2)
+    with torch.no_grad():
+        # Calculate KL divergence between old and new policies
+        kl = (token_log_probs - old_log_probs).mean()
+        
+        # Adjust beta based on KL divergence relative to target
+        beta = beta * (kl / target_kl).clamp(0.5, 2.0)
+    
+    # KL Penalty with dynamic beta
     kl_div = torch.exp(ref_log_probs - token_log_probs) - (ref_log_probs - token_log_probs) - 1
     
     # Combine and mask the loss
@@ -588,13 +579,14 @@ def train_with_grpo(
     train_data,
     num_iterations=1,
     num_steps=100,
-    batch_size=2,                 # reduce batch_size for GPU memory
+    batch_size=1,                 # reduce batch_size for GPU memory
     num_generations=2,            # reduce generations
     max_completion_length=128,    # reduce completion length
     beta=0.1,
     learning_rate=5e-6,
     mu=3,
     epsilon=0.2,
+    target_kl=0.01,               # target KL divergence for dynamic controller
     reward_function=pubmedqa_correctness_reward,
     device=None,
     use_lora=True                # optional flag to enable LoRA
@@ -668,7 +660,8 @@ def train_with_grpo(
                         rollout_data,
                         reward_function,
                         beta=beta,
-                        epsilon=epsilon
+                        epsilon=epsilon,
+                        target_kl=target_kl
                     )
 
                 # Scaled backward pass
@@ -676,7 +669,7 @@ def train_with_grpo(
                 torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=1.0)
                 scaler.step(optimizer)
                 scaler.update()
-
+                loss_value = loss.item()
                 # Clear memory after each inner step
                 del loss
                 torch.cuda.empty_cache()
@@ -686,7 +679,22 @@ def train_with_grpo(
             torch.cuda.empty_cache()
 
             print(f"Iter {iteration+1}, Step {step+1}/{num_steps}, Avg Reward: {avg_reward:.2f}")
+            log_data = {
+                "iteration": iteration + 1,
+                "step": step + 1,
+                "avg_reward": avg_reward,
+                "loss": loss_value,
+            }
 
+
+            wandb.log(log_data)
+        
+        # Update reference model with exponential moving average
+        print("Updating reference model with exponential moving average...")
+        with torch.no_grad():
+            for ref_param, actor_param in zip(ref_model.parameters(), model.parameters()):
+                ref_param.data = 0.95 * ref_param.data + 0.05 * actor_param.data
+        
     return model
 
 
@@ -698,6 +706,16 @@ def evaluate_supervisor(model, tokenizer, eval_examples, device=None, max_superv
     if device is None:
         device = next(model.parameters()).device
 
+    print(f"[DEBUG] Evaluation using model type: {type(model)}")
+    print(f"[DEBUG] Model device: {device}")
+    print(f"[DEBUG] Model training mode before eval(): {model.training}")
+    
+    # Check if this is a LoRA model
+    if hasattr(model, 'peft_config'):
+        print(f"[DEBUG] LoRA model detected with config: {model.peft_config}")
+    else:
+        print(f"[DEBUG] Standard model (no LoRA)")
+    
     model.eval()
     correct, total = 0, len(eval_examples)
     print("\n" + "="*50)
@@ -719,14 +737,12 @@ def evaluate_supervisor(model, tokenizer, eval_examples, device=None, max_superv
                 pad_token_id=tokenizer.pad_token_id,
                 eos_token_id=tokenizer.eos_token_id,
             )
-        sup_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        # sup_response = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
         # 3) Parse agent choice (default to 'answering' if bad format)
-        agent = parse_supervisor_choice(sup_response)
-                # Extract only the newly generated tokens (not the input prompt)
-        input_length = inputs.shape[1]
-        new_tokens = outputs[0][input_length:]
+        new_tokens = outputs[0][inputs.shape[1]:]
         sup_response = tokenizer.decode(new_tokens, skip_special_tokens=True)
+        agent = parse_supervisor_choice(sup_response)
         print(f"\n[DEBUG] Parsed agent choice: {agent}")
         print(f"[DEBUG] Valid agents: {VALID_AGENTS}")
         print(f"[DEBUG] Agent in valid agents: {agent in VALID_AGENTS}")
@@ -755,6 +771,8 @@ def evaluate_supervisor(model, tokenizer, eval_examples, device=None, max_superv
 
     acc = 100.0 * correct / max(total, 1)
     print(f"\nEvaluation Complete. Accuracy: {acc:.2f}% ({correct}/{total})")
+    wandb.log({"evaluation_accuracy": acc})
+
     print("="*50)
     model.train()
     return acc

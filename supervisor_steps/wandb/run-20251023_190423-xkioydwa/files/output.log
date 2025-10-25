@@ -1,0 +1,30 @@
+Weights & Biases initialized: project=GRPO-Qwen-PubMedQA-Manual, run=multi-agent-grpo-run
+
+Evaluating model before fine-tuning...
+
+Chained multi-agent evaluation:
+
+==================================================
+STARTING CHAINED SUPERVISOR EVALUATION ON 2 EXAMPLES
+Max steps per example: 3
+==================================================
+
+--- Processing Example ---
+
+[STEP 1/3]
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 129, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 89, in main
+    evaluate_supervisor_chained(model, tokenizer, eval_data, device, max_steps=3)
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 939, in evaluate_supervisor_chained
+    sup_prompt = build_supervisor_prompt(ex, conversation_history)
+TypeError: build_supervisor_prompt() takes 1 positional argument but 2 were given
+Traceback (most recent call last):
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 129, in <module>
+    main()
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\main.py", line 89, in main
+    evaluate_supervisor_chained(model, tokenizer, eval_data, device, max_steps=3)
+  File "C:\Users\madis\Desktop\supervisor_remote\supervisor_steps\funtions.py", line 939, in evaluate_supervisor_chained
+    sup_prompt = build_supervisor_prompt(ex, conversation_history)
+TypeError: build_supervisor_prompt() takes 1 positional argument but 2 were given
