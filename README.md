@@ -1,12 +1,12 @@
-# 🧠 GRPO-PubMedQA Manual Training
+#  GRPO-PubMedQA Manual Training
 
-This project fine-tunes a **Qwen-2.5-7B-Instruct** model on the **PubMedQA** dataset using a manually supervised **GRPO (Group Relative Policy Optimization)** pipeline.
+This project fine-tunes a **Qwen-2.5-0.5B-Instruct** model on the **PubMedQA** dataset using a manually supervised **GRPO (Group Relative Policy Optimization)** pipeline, with subagent using qwen 7b.
 
 ---
 
-## 🚀 How to Run
+##  How to Run
 
-### 🐳 Option 1 — Using Docker (Recommended)
+###  Option 1 — Using Docker
 
 **Step 1:** Go into the project folder:
 ```bash
@@ -20,12 +20,17 @@ docker build -t grpo-pubmedqa:latest .
 
 **Step 3:** Run the container with GPU support:
 ```bash
-docker run -it --gpus all -v ${PWD}:/workspace grpo-pubmedqa:latest
+docker run -it --gpus all \
+  -v ${PWD}:/workspace \
+  -e WANDB_API_KEY=your_key_here \
+  -e WANDB_PROJECT=GRPO-Qwen-PubMedQA-Manual \
+  grpo-pubmedqa:latest
+
 ```
 
 ---
 
-### 🧩 Option 2 — Run Locally (Without Docker)
+###  Option 2 — Run Locally (Without Docker)
 
 **Step 1:** Install dependencies:
 ```bash
@@ -45,7 +50,7 @@ python main.py
 
 ---
 
-## ✅ Notes
+##  Notes
 
 - Ensure you have a working **GPU + CUDA** setup.  
 - **Weights & Biases** is optional but recommended for tracking metrics and losses.  
@@ -54,7 +59,7 @@ python main.py
 
 ---
 
-## 🧰 Example Environment Variables (Windows PowerShell)
+##  Example Environment Variables (Windows PowerShell)
 ```powershell
 setx WANDB_API_KEY "your_key_here"
 setx WANDB_PROJECT "GRPO-Qwen-PubMedQA-Manual"
